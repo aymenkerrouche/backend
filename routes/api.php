@@ -30,7 +30,7 @@ Route::post('/agencies', function (){
     return Agency::all();
 });
 
-Route::get('/offers/search/{name}', [OfferController::class, 'search']);
+//Route::get('/offers/search/{name}', [OfferController::class, 'search']);
 
 Route::resource('offers', OfferController::class);
 Route::post('/register', [AuthController::class, 'register']);
