@@ -23,9 +23,6 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
         if ($user) {
             return response('The provided email already exists.', 403);
-            // throw ValidationException::withMessages([
-            //     'email' => ['The provided email already exists.'],
-            // ]);
         }
 
         $input = $request->all();
@@ -50,9 +47,6 @@ class AuthController extends Controller
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
             return response('The provided credentials are incorrect.', 403);
-            // throw ValidationException::withMessages([
-            //     'email' => ['The provided credentials are incorrect.'],
-            // ]);
         }
 
         $response['token'] =  $user->createToken($request->email)->plainTextToken;
