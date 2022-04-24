@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OfferController;
+use App\Http\Controllers\UserController;
 use App\Models\Agency;
 use App\Models\Offer;
 use Illuminate\Http\Request;
@@ -18,8 +19,9 @@ use App\Models\Client;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware'=>['auth:sanctum']],function () {
+    Route::get('/user', [UserController::class, 'getProfile']);
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
 
 Route::post('/clients', function (){

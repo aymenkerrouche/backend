@@ -23,6 +23,9 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
         if ($user) {
             return response('The provided email already exists.', 403);
+            // throw ValidationException::withMessages([
+            //     'email' => ['The provided email already exists.'],
+            // ]);
         }
 
         $input = $request->all();
