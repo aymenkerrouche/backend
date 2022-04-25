@@ -14,7 +14,21 @@ return new class extends Migration
     public function up()
     {
         Schema::create('offers', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
+            $table->string('name');
+            $table->string('description');
+            $table->string('logement_type');
+            $table->string('trading_type');
+            $table->date('dateStart')->nullable();
+            $table->date('dateEnd')->nullable();
+            $table->integer('bed')->nullable();
+            $table->integer('rooms');
+            $table->integer('visitors')->nullable();
+            $table->integer('bathroom')->nullable();
+            $table->integer('price');
+            $table->integer('views_nm')->nullable();
+            $table->double('latitude')->nullable();
+            $table->double('longitude')->nullable();
             $table->timestamps();
         });
     }

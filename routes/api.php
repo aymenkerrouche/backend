@@ -34,10 +34,10 @@ Route::post('/agencies', function (){
 
 //Route::get('/offers/search/{name}', [OfferController::class, 'search']);
 
-Route::resource('offers', OfferController::class);
+Route::apiResource('/offer', OfferController::class);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-//Route::post('/offerAdd',[OfferController::class, 'store']);
+Route::post('/offerAdd',[OfferController::class, 'store']);
 
 //Route::post('/offers', [OfferController::class, 'index']);

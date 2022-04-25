@@ -36,12 +36,12 @@ class OfferController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id'=>'required',
+            // 'id'=>'required',
             'name'=>'required',
             'logement_type'=>'required',
             'trading_type'=>'required',
             'rooms'=>'required',
-            'bathroom'=>'required',
+            // 'bathroom'=>'required',
             'price'=>'required',
             'latitude'=>'required',
             'longitude'=>'required',
