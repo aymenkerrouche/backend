@@ -22,6 +22,7 @@ use App\Models\Client;
 Route::group(['middleware'=>['auth:sanctum']],function () {
     Route::get('/user', [UserController::class, 'getProfile']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::apiResource('/offer', OfferController::class);
 });
 
 Route::post('/clients', function (){
@@ -34,7 +35,6 @@ Route::post('/agencies', function (){
 
 //Route::get('/offers/search/{name}', [OfferController::class, 'search']);
 
-Route::apiResource('/offer', OfferController::class);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 

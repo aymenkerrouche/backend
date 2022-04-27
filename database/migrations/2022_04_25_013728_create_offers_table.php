@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('offers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->string('logement_type');
             $table->string('trading_type');
             $table->date('dateStart')->nullable();

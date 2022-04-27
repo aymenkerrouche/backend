@@ -35,19 +35,31 @@ class OfferController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            // 'id'=>'required',
+        $infos = $request->validate([
             'name'=>'required',
             'logement_type'=>'required',
             'trading_type'=>'required',
             'rooms'=>'required',
-            // 'bathroom'=>'required',
             'price'=>'required',
             'latitude'=>'required',
             'longitude'=>'required',
+
+        ]);
+
+        $offer = Offer::create([
+            'name'=>$infos['name'],
+            'logement_type'=>$infos['logement_type'],
+            'trading_type'=>$infos['trading_type'],
+            'rooms'=>$infos['rooms'],
+            'price'=>$infos['price'],
+            'latitude'=>$infos['latitude'],
+            'longitude'=>$infos['longitude'],
             'agency_id'=> auth()->user()->id,
         ]);
-        return Offer::create($request->all());
+        return response([
+            'message' => 'Post created.',
+            'post' => $offer,
+        ], 200);;
     }
 
     /**
