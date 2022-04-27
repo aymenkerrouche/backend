@@ -57,7 +57,7 @@ class AuthController extends Controller
         return response(json_encode($response));
     }
 
-    public function logout(Request $request){
+    public function logout(){
         auth()->user()->tokens()->delete();
 
         return response([
@@ -74,23 +74,21 @@ class AuthController extends Controller
     }
 
 
-    // update user
-    // public function update(Request $request)
-    // {
-    //     $attrs = $request->validate([
-    //         'name' => 'required|string'
-    //     ]);
+    //update user
+    public function update(Request $request)
+    {
 
-    //     $image = $this->saveImage($request->image, 'profiles');
+        // $image = $this->saveImage($request->image, 'profiles');
 
-    //     auth()->user()->update([
-    //         'name' => $attrs['name'],
-    //         'image' => $image
-    //     ]);
+         auth()->user()->update([
+             'name' => $request['name'],
+             'email' => $request['email'],
+             //'image' => $image
+         ]);
 
-    //     return response([
-    //         'message' => 'User updated.',
-    //         'user' => auth()->user()
-    //     ], 200);
-    // }
+         return response([
+             'message' => 'Profile updated.',
+             'user' => auth()->user()
+         ], 200);
+    }
 }

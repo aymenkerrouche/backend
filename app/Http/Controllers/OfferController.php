@@ -57,7 +57,7 @@ class OfferController extends Controller
             'agency_id'=> auth()->user()->id,
         ]);
         return response([
-            'message' => 'Post created.',
+            'message' => 'Offer created.',
             'post' => $offer,
         ], 200);;
     }
@@ -70,7 +70,9 @@ class OfferController extends Controller
      */
     public function show($id)
     {
-        return Offer::find($id);
+        return response([
+            'offer' => Offer::where('id', $id)->get()
+        ], 200);
     }
 
     /**
@@ -79,7 +81,7 @@ class OfferController extends Controller
      * @param  \App\Models\offer  $offer
      * @return \Illuminate\Http\Response
      */
-    public function edit(offer $offer)
+    public function edit(offer $offer,)
     {
         //
     }
@@ -94,8 +96,26 @@ class OfferController extends Controller
     public function update(Request $request, $id)
     {
         $offer = Offer::find($id);
+
+        if(!$offer)
+        {
+            return response([
+                'message' => 'Offer not found.'
+            ], 403);
+        }
+
+        if($offer->agency_id != auth()->user()->id)
+        {
+            return response([
+                'message' => 'Permission denied.'
+            ], 403);
+        }
+
         $offer->update($request->all());
-        return $offer;
+        return response([
+            'message' => 'Offer updated.',
+            'post' => $offer,
+        ], 200);
     }
 
     /**
@@ -106,7 +126,25 @@ class OfferController extends Controller
      */
     public function destroy($id)
     {
-        return Offer::destroy($id);
+        $offer = Offer::find($id);
+
+        if(!$offer)
+        {
+            return response([
+                'message' => 'Offer not found.'
+            ], 403);
+        }
+
+        if($offer->agency_id != auth()->user()->id)
+        {
+            return response([
+                'message' => 'Permission denied.'
+            ], 403);
+        }
+        $offer->delete();
+        return response([
+            'message' => 'Offer deleted.'
+        ], 200);
     }
 
     /**

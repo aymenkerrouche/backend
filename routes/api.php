@@ -18,10 +18,18 @@ use App\Models\Client;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+//public routes
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
+//Protected routes
 Route::group(['middleware'=>['auth:sanctum']],function () {
-    Route::get('/user', [UserController::class, 'getProfile']);
+    // User
+    Route::get('/user', [AuthController::class, 'user']);
+    Route::put('/user', [AuthController::class, 'update']);
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    // Offer
     Route::apiResource('/offer', OfferController::class);
 });
 
@@ -34,9 +42,6 @@ Route::post('/agencies', function (){
 });
 
 //Route::get('/offers/search/{name}', [OfferController::class, 'search']);
-
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/offerAdd',[OfferController::class, 'store']);
 
