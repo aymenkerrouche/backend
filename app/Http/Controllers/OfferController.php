@@ -45,7 +45,7 @@ class OfferController extends Controller
             'price'=>'required',
             'latitude'=>'required',
             'longitude'=>'required',
-            'agency_id'=>'required',
+            'agency_id'=> auth()->user()->id,
         ]);
         return Offer::create($request->all());
     }

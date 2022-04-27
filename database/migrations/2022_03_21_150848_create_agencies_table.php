@@ -14,11 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('agencies', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('views ag')->nullable();
             $table->double('latitude');
             $table->double('longitude');
-            $table->string('image')->default('user.png')->nullable();
             $table->integer('phone');
             $table->timestamps();
         });
