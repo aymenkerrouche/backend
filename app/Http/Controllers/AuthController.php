@@ -82,6 +82,7 @@ class AuthController extends Controller
 
         if ($request['password'] != null)
         {
+
             $request['password'] = Hash::make($request['password']);
             auth()->user()->update($request->all());
         }else{
