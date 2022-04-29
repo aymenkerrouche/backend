@@ -26,7 +26,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::group(['middleware'=>['auth:sanctum']],function () {
     // User
     Route::get('/user', [AuthController::class, 'user']);
-    Route::put('/user', [AuthController::class, 'update']);
+    Route::patch('/user', [AuthController::class, 'update']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
     // Offer
@@ -41,8 +41,6 @@ Route::post('/agencies', function (){
     return Agency::all();
 });
 
-//Route::get('/offers/search/{name}', [OfferController::class, 'search']);
 
-Route::post('/offerAdd',[OfferController::class, 'store']);
+//Route::post('/offerAdd',[OfferController::class, 'store']);
 
-//Route::post('/offers', [OfferController::class, 'index']);

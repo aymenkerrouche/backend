@@ -23,9 +23,6 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
         if ($user) {
             return response('The provided email already exists.', 403);
-            // throw ValidationException::withMessages([
-            //     'email' => ['The provided email already exists.'],
-            // ]);
         }
 
         $input = $request->all();
@@ -80,11 +77,29 @@ class AuthController extends Controller
 
         // $image = $this->saveImage($request->image, 'profiles');
 
-         auth()->user()->update([
-             'name' => $request['name'],
-             'email' => $request['email'],
-             //'image' => $image
-         ]);
+
+
+
+        if ($request['password'] != null)
+        {
+            $request['password'] = Hash::make($request['password']);
+            auth()->user()->update($request->all());
+        }else{
+            if ($request['name'] == null){
+                auth()->user()->update([
+                    'email' => $request['email'],
+                ]);
+           }elseif($request['email'] == null){
+                auth()->user()->update([
+                    'name' => $request['name'],
+                ]);
+            }else{
+                auth()->user()->update([
+                    'name' => $request['name'],
+                    'email' => $request['email'],
+                ]);
+            }
+        }
 
          return response([
              'message' => 'Profile updated.',
