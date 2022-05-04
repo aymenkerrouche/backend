@@ -10,4 +10,14 @@ class Offer extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function agency()
+    {
+        return $this->belongsTo(Agency::class);
+    }
 }

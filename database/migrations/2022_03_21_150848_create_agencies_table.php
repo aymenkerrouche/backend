@@ -14,8 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('agencies', function (Blueprint $table) {
-            $table->double('latitude');
-            $table->double('longitude');
+            $table->string('location')->nullable();
+            $table->double('latitude')->nullable();
+            $table->double('longitude')->nullable();
             $table->integer('phone');
             $table->timestamps();
         });

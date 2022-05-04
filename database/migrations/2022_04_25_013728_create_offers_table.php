@@ -29,6 +29,7 @@ return new class extends Migration
             $table->integer('views_nm')->nullable();
             $table->double('latitude')->nullable();
             $table->double('longitude')->nullable();
+            $table->string('location')->nullable();
             $table->timestamps();
         });
     }

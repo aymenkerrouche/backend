@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\offer;
 use Illuminate\Http\Request;
+use function Sodium\add;
 
 class OfferController extends Controller
 {
@@ -14,7 +15,9 @@ class OfferController extends Controller
      */
     public function index()
     {
-        return Offer::all();
+        return response([
+            'offers' => Offer::orderBy('created_at', 'desc')->with('user:id,name')->get()
+        ], 200);
     }
 
     /**
@@ -35,7 +38,7 @@ class OfferController extends Controller
      */
     public function store(Request $request)
     {
-        $infos = $request->validate([
+        $request->validate([
             'name'=>'required',
             'logement_type'=>'required',
             'trading_type'=>'required',
@@ -46,19 +49,13 @@ class OfferController extends Controller
 
         ]);
 
-        $offer = Offer::create([
-            'name'=>$infos['name'],
-            'logement_type'=>$infos['logement_type'],
-            'trading_type'=>$infos['trading_type'],
-            'rooms'=>$infos['rooms'],
-            'price'=>$infos['price'],
-            'latitude'=>$infos['latitude'],
-            'longitude'=>$infos['longitude'],
-            'agency_id'=> auth()->user()->id,
-        ]);
+        $request['user_id'] = auth()->user()->id;
+        $request['agency_id'] = auth()->user()->id;
+
+        $offer = Offer::create($request->all());
         return response([
             'message' => 'Offer created.',
-            'post' => $offer,
+            'offer' => $offer,
         ], 200);;
     }
 
