@@ -78,15 +78,18 @@ class AuthController extends Controller
 
         // $image = $this->saveImage($request->image, 'profiles');
 
-
-
+        $user = User::where('email', $request->email)->first();
 
         if ($request['password'] != null)
         {
 
             $request['password'] = Hash::make($request['password']);
             auth()->user()->update($request->all());
-        }else{
+        }
+        elseif ($user) {
+            return response('The provided email already exists.', 403);
+        }
+        else{
             if ($request['name'] == null){
                 auth()->user()->update([
                     'email' => $request['email'],
