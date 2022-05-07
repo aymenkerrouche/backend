@@ -14,9 +14,10 @@ class AuthController extends Controller
     public function register(Request $request): Response|Application|ResponseFactory
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
+            'name' =>'required',
+            'email' =>'required|email',
+            'password' =>'required',
+            'type' =>'required',
         ]);
 
         // Check if user already exists
