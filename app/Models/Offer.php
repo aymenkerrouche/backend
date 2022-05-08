@@ -20,4 +20,14 @@ class Offer extends Model
     {
         return $this->belongsTo(Agency::class);
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
 }

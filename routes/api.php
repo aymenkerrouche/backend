@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\UserController;
 use App\Models\Agency;
@@ -22,6 +23,14 @@ use App\Models\Client;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::post('/clients', function (){
+    return Client::all();
+});
+
+Route::post('/agencies', function (){
+    return Agency::all();
+});
+
 //Protected routes
 Route::group(['middleware'=>['auth:sanctum']],function () {
     // User
@@ -31,16 +40,13 @@ Route::group(['middleware'=>['auth:sanctum']],function () {
 
     // Offer
     Route::apiResource('/offer', OfferController::class);
+
+    // Like
+    Route::post('/posts/{id}/likes', [LikeController::class, 'likeOrUnlike']);
+
+    //search
+    Route::get('/offer/search/{name}', [OfferController::class, 'search']);
+
+    Route::get('/agency', [OfferController::class, 'agencyOffers']);
 });
-
-Route::post('/clients', function (){
-    return Client::all();
-});
-
-Route::post('/agencies', function (){
-    return Agency::all();
-});
-
-
-//Route::post('/offerAdd',[OfferController::class, 'store']);
 

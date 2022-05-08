@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\offer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use function Sodium\add;
 
 class OfferController extends Controller
@@ -16,7 +17,11 @@ class OfferController extends Controller
     public function index()
     {
         return response([
-            'offers' => Offer::orderBy('created_at', 'desc')->with('user:id,name')->get()
+            'offers' => Offer::orderBy('created_at', 'desc')->with('user:id,name')->with('likes', function($like){
+                return $like->where('user_id', auth()->user()->id)
+                    ->select('id', 'user_id', 'offer_id')->get();
+            })
+                ->get()
         ], 200);
     }
 
@@ -67,8 +72,16 @@ class OfferController extends Controller
      */
     public function show($id)
     {
+        $offer = Offer::find($id);
+
+        if(!$offer)
+        {
+            return response([
+                'message' => 'Offer not found.'
+            ], 403);
+        }
         return response([
-            'offer' => Offer::where('id', $id)->get()
+            'offer' => Offer::where('id', $id)->with('user:id,name')->get()
         ], 200);
     }
 
@@ -153,6 +166,18 @@ class OfferController extends Controller
     public function search($name)
     {
         return Offer::where('name', 'like','%'.$name.'%')->get();
+    }
+
+
+    public function agencyOffers(){
+
+        $offers = Offer::where('user_id',auth()->user()->id)->orderBy('id','desc')->get();
+        $user = auth()->user()->id;
+        return response([
+            'success' => true,
+            'offers' => $offers,
+            'user' => $user
+        ]);
     }
 
 

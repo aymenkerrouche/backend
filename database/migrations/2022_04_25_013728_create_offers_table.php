@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->string('logement_type');
             $table->string('trading_type');
-            $table->date('dateStart')->nullable();
-            $table->date('dateEnd')->nullable();
+            $table->date('date_start')->nullable();
+            $table->date('date_end')->nullable();
             $table->integer('bed')->nullable();
             $table->integer('rooms');
             $table->integer('visitors')->nullable();
