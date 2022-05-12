@@ -42,7 +42,9 @@ Route::group(['middleware'=>['auth:sanctum']],function () {
     Route::apiResource('/offer', OfferController::class);
 
     // Like
-    Route::post('/posts/{id}/likes', [LikeController::class, 'likeOrUnlike']);
+    Route::post('/offer/{id}/likes', [LikeController::class, 'likeOrUnlike']);
+    Route::post('/offer/{id}/unlikes', [LikeController::class, 'Unlike']);
+    Route::get('/likes', [LikeController::class, 'index']);
 
     //search
     Route::get('/offer/search/{name}', [OfferController::class, 'search']);
