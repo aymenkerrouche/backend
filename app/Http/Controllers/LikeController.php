@@ -45,28 +45,15 @@ class LikeController extends Controller
 
     public function index()
     {
+        $offers = Offer::with('user:id,name')->with('likes', function($like){
+            return $like->where('user_id', auth()->user()->id)
+                ->select('id', 'user_id', 'offer_id')->get();
+            })->get();
 
-        $likes = DB::table("offers")->leftJoin("likes", function($join){
-                $join->on("offers.id", "=", "likes.offer_id");
-        })->get();
+        $likes = $offers->where('likes' ,'<>', '[]')->values();
 
-        $like = $likes->where('user_id',auth()->user()->id);
+        return  response($likes, 200);
 
-        if($like == null){
-            return response([
-                'offers' => 'Offer not found.'
-            ], 403);
-        }else{
-            return response([
-                'offers' => $like,
-            ], 200);
-        }
-
-        // $likes = Like::orderBy('created_at', 'desc')->with('user:id,name')->where('user_id',auth()->user()->id)->get();
-        // foreach ($likes as $like){
-        //     $offer_id = $like['offer_id'];
-        //     $likes->add(Offer::where('id',$offer_id)->get());
-        // }
 
     }
 
@@ -77,15 +64,15 @@ class LikeController extends Controller
         if(!$offer)
         {
             return response([
-                'message' => 'Offer not found.'
+                'offers' => 'Offer not found.'
             ], 403);
         }else{
             $like = $offer->likes()->where('user_id', auth()->user()->id)->first();
 
             $like->delete();
+            return response([
+                'offers' => 'Disliked'
+            ], 200);
         }
-        return response([
-            'message' => 'Disliked'
-        ], 200);
     }
 }

@@ -44,11 +44,14 @@ Route::group(['middleware'=>['auth:sanctum']],function () {
     // Like
     Route::post('/offer/{id}/likes', [LikeController::class, 'likeOrUnlike']);
     Route::post('/offer/{id}/unlikes', [LikeController::class, 'Unlike']);
+
+    // List Favorite
     Route::get('/likes', [LikeController::class, 'index']);
 
     //search
     Route::get('/offer/search/{name}', [OfferController::class, 'search']);
 
+    // Agency offers
     Route::get('/agency', [OfferController::class, 'agencyOffers']);
 });
 
