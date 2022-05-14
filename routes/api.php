@@ -41,6 +41,8 @@ Route::group(['middleware'=>['auth:sanctum']],function () {
     // Offer
     Route::apiResource('/offer', OfferController::class);
 
+    Route::get('/offers', [OfferController::class, 'miniOffer']);
+
     // Like
     Route::post('/offer/{id}/likes', [LikeController::class, 'likeOrUnlike']);
     Route::post('/offer/{id}/unlikes', [LikeController::class, 'Unlike']);

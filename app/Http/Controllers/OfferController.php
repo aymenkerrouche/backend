@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\offer;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use function Sodium\add;
 
 class OfferController extends Controller
@@ -20,7 +22,7 @@ class OfferController extends Controller
             'offers' => Offer::orderBy('created_at', 'desc')->with('user:id,name')->with('likes', function($like){
                 return $like->where('user_id', auth()->user()->id)
                     ->select('id', 'user_id', 'offer_id')->get();
-            })
+            })->select('id','name', 'price','location','user_id','agency_id')
                 ->get()
         ], 200);
     }
