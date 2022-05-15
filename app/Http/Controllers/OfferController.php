@@ -83,7 +83,11 @@ class OfferController extends Controller
             ], 403);
         }
         return response([
-            'offer' => Offer::where('id', $id)->with('user:id,name')->get()
+            'offer' => Offer::where('id', $id)->with('user:id,name')->with('likes', function($like){
+                return $like->where('user_id', auth()->user()->id)
+                    ->select('id', 'user_id', 'offer_id')->get();
+            })
+                ->get()
         ], 200);
     }
 
