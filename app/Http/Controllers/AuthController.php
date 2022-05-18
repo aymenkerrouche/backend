@@ -7,7 +7,9 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -44,7 +46,7 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request['email'])->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
             return response('The provided credentials are incorrect.', 403);
@@ -66,17 +68,15 @@ class AuthController extends Controller
     // get user details
     public function user()
     {
+        $user = auth()->user();
         return response([
-            'user' => auth()->user()
+            'user' => $user
         ], 200);
     }
-
 
     //update user
     public function update(Request $request)
     {
-
-        // $image = $this->saveImage($request->image, 'profiles');
 
         $user = User::where('email', $request->email)->first();
 
@@ -110,5 +110,44 @@ class AuthController extends Controller
              'message' => 'Profile updated.',
              'user' => auth()->user()
          ], 200);
+    }
+
+
+    public function userimage()
+    {
+        $user = auth()->user();
+        $user_image = $user['image'];
+        return response([
+            'user' => $user_image
+        ],200);
+    }
+
+
+    public function uploadImage(Request $request)
+    {
+        if ($request->hasFile('image')) {
+
+            $originalImage = $request->file('image');
+            $image = Storage::disk('local')->put('public/users', $originalImage, 'public');
+
+            DB::table('users')->where('id',auth()->user()->id)
+                ->update([
+                'image' => $image,
+            ]);
+            return response([
+                'image' => 'First/storage/app/'.$image,
+            ], 200);
+        }
+    }
+
+    public function deleteImage()
+    {
+        $user = auth()->user();
+        $image = $user['image'];
+        DB::table('users')->where('id',$user->id)
+            ->update([
+                'image' => 'user.png',
+            ]);
+        return Storage::disk('local')->delete($image);;
     }
 }

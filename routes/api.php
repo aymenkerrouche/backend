@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\OfferController;
+use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\UserController;
 use App\Models\Agency;
 use App\Models\Offer;
@@ -37,11 +38,17 @@ Route::group(['middleware'=>['auth:sanctum']],function () {
     Route::get('/user', [AuthController::class, 'user']);
     Route::patch('/user', [AuthController::class, 'update']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/image', [AuthController::class, 'uploadImage']);
+    Route::get('/image', [AuthController::class, 'userimage']);
+    Route::delete('/user/image/delete', [AuthController::class, 'deleteImage']);
+
 
     // Offer
     Route::apiResource('/offer', OfferController::class);
-
     Route::get('/offers', [OfferController::class, 'miniOffer']);
+
+    //Photos
+    Route::apiResource('/photo', PhotoController::class);
 
     // Like
     Route::post('/offer/{id}/likes', [LikeController::class, 'likeOrUnlike']);

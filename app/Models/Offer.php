@@ -30,4 +30,9 @@ class Offer extends Model
     {
         return $this->hasMany(Like::class);
     }
+
+    public function photos()
+    {
+        return $this->hasMany(Photo::class);
+    }
 }
