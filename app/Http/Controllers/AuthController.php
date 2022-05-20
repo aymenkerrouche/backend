@@ -148,6 +148,6 @@ class AuthController extends Controller
             ->update([
                 'image' => 'user.png',
             ]);
-        return Storage::disk('local')->delete($image);;
+        return Storage::disk('local')->delete($image);
     }
 }

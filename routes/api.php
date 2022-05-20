@@ -28,7 +28,7 @@ Route::post('/clients', function (){
     return Client::all();
 });
 
-Route::post('/agencies', function (){
+Route::get('/agencies', function (){
     return Agency::all();
 });
 
@@ -45,7 +45,8 @@ Route::group(['middleware'=>['auth:sanctum']],function () {
 
     // Offer
     Route::apiResource('/offer', OfferController::class);
-    Route::get('/offers', [OfferController::class, 'miniOffer']);
+    Route::get('/get/id', [OfferController::class, 'getOfferId']);
+    Route::get('/agencyPhone/{id}', [OfferController::class, 'agencyPhone']);
 
     //Photos
     Route::apiResource('/photo', PhotoController::class);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Agency;
 use App\Models\offer;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -72,12 +73,12 @@ class OfferController extends Controller
                 'message' => 'Offer not found.'
             ], 403);
         }
+        $offer = Offer::where('id', $id)->with('user:id,name')->with('likes', function($like){
+            return $like->where('user_id', auth()->user()->id)
+                ->select('id', 'user_id', 'offer_id')->get();
+        })->get();
         return response([
-            'offer' => Offer::where('id', $id)->with('user:id,name')->with('likes', function($like){
-                return $like->where('user_id', auth()->user()->id)
-                    ->select('id', 'user_id', 'offer_id')->get();
-            })
-                ->get()
+            'offer' => $offer
         ], 200);
     }
 
@@ -155,17 +156,28 @@ class OfferController extends Controller
         return Offer::where('name', 'like','%'.$name.'%')->get();
     }
 
-
-    public function agencyOffers(){
-
-        $offers = Offer::where('user_id',auth()->user()->id)->orderBy('id','desc')->get();
-        $user = auth()->user()->id;
-        return response([
-            'success' => true,
-            'offers' => $offers,
-            'user' => $user
-        ]);
+    public function agencyPhone($id)
+    {
+        $phone=Agency::where('agency_id', $id)->select('phone')->get();
+        return $phone;
     }
 
+
+    public function agencyOffers(): \Illuminate\Http\Response|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory
+    {
+
+        $offers = Offer::where('user_id',auth()->user()->id)->orderBy('created_at','desc')->get();
+        return response($offers);
+    }
+
+    public function getOfferId(){
+
+        $offers = Offer::where('user_id',auth()->user()->id)->orderBy('created_at','desc')->get();
+        $offer = $offers->first();
+        $id = $offer->id;
+        return response([
+            'id' => $id,
+        ]);
+    }
 
 }
