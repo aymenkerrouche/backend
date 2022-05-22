@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\PhotoController;
@@ -63,5 +64,12 @@ Route::group(['middleware'=>['auth:sanctum']],function () {
 
     // Agency offers
     Route::get('/agency', [OfferController::class, 'agencyOffers']);
+
+    // Comment
+    Route::get('/comment/{id}', [CommentController::class, 'index']);
+    Route::post('/comment/{id}', [CommentController::class, 'store']);
+    Route::patch('/comment/{id}', [CommentController::class, 'update']);
+    Route::delete('/comment/{id}', [CommentController::class, 'destroy']);
+
 });
 
