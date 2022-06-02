@@ -21,6 +21,7 @@ class PhotoController extends Controller
     {
         $offer_id = $request['offer_id'];
         $input=$request->allFiles();
+        $image= '';
         foreach ($input as $imagefile) {
             $image = $imagefile->store('public/offers/'.$offer_id);
             Photo::create([
@@ -28,6 +29,10 @@ class PhotoController extends Controller
               'offer_id' => $offer_id,
             ]);
         }
+        DB::table('offers')->where('id',$offer_id)
+            ->update([
+                'image' => $image,
+            ]);
         return response([
             'message' => 'Photos Added.'
         ], 200);
@@ -59,5 +64,6 @@ class PhotoController extends Controller
             'message' => 'photos Deleted'
         ], 200);;
     }
+
 
 }

@@ -23,7 +23,7 @@ class OfferController extends Controller
             'offers' => Offer::orderBy('created_at', 'desc')->with('user:id,name')->with('likes', function($like){
                 return $like->where('user_id', auth()->user()->id)
                     ->select('id', 'user_id', 'offer_id')->get();
-            })->select('id','name', 'price','location','user_id','agency_id')
+            })->select('id','name','image', 'price','location','user_id','agency_id')
                 ->get()
         ], 200);
     }
@@ -180,6 +180,28 @@ class OfferController extends Controller
         ]);
     }
 
-    
+    public function recentOffers(): \Illuminate\Http\Response|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory
+    {
+
+        return response([
+            'offers' => Offer::orderBy('created_at', 'desc')->with('user:id,name')->with('likes', function($like){
+                return $like->where('user_id', auth()->user()->id)
+                    ->select('id', 'user_id', 'offer_id')->get();
+            })->select('id','name', 'price','image','location','user_id','agency_id')
+                ->take(2)->get()
+        ], 200);
+    }
+
+    public function randomOffers(): \Illuminate\Http\Response|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory
+    {
+
+        return response([
+            'offers' => Offer::inRandomOrder()->limit(6)->with('user:id,name')->with('likes', function($like){
+                return $like->where('user_id', auth()->user()->id)
+                    ->select('id', 'user_id', 'offer_id')->get();
+            })->select('id','name', 'price','location','image','user_id','agency_id')
+                ->get()
+        ], 200);
+    }
 
 }

@@ -48,9 +48,12 @@ Route::group(['middleware'=>['auth:sanctum']],function () {
     Route::apiResource('/offer', OfferController::class);
     Route::get('/get/id', [OfferController::class, 'getOfferId']);
     Route::get('/agencyPhone/{id}', [OfferController::class, 'agencyPhone']);
+    Route::get('/recent', [OfferController::class, 'recentOffers']);
+    Route::get('/random', [OfferController::class, 'randomOffers']);
 
     //Photos
     Route::apiResource('/photo', PhotoController::class);
+    Route::get('/photo/one/{id}', [PhotoController::class, 'getOne']);
 
     // Like
     Route::post('/offer/{id}/likes', [LikeController::class, 'likeOrUnlike']);
