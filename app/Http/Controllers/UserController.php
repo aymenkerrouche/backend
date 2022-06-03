@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Agency;
 use App\Models\user;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -37,7 +39,18 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $image = $request["image"]->store('public/registers');
+        $agency = Agency::create([
+            'image' => $image,
+            'agency_id' => $request["agency_id"],
+            'location' => $request["location"],
+            'longitude' => $request["longitude"],
+            'latitude' => $request["latitude"],
+            'phone' => $request["phone"],
+        ]);
+        return response([
+            'message' => $agency
+        ], 200);
     }
 
     /**
@@ -85,9 +98,4 @@ class UserController extends Controller
         //
     }
 
-    public function getProfile(Request $request)
-    {
-        $user_id= $request->user()->id;
-        return User::find($user_id);
-    }
 }

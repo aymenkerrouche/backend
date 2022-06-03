@@ -67,6 +67,7 @@ Route::group(['middleware'=>['auth:sanctum']],function () {
 
     // Agency offers
     Route::get('/agency', [OfferController::class, 'agencyOffers']);
+    Route::post('/signup', [UserController::class, 'store']);
 
     // Comment
     Route::get('/comment/{id}', [CommentController::class, 'index']);
