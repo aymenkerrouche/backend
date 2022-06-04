@@ -52,6 +52,7 @@ Route::group(['middleware'=>['auth:sanctum']],function () {
     Route::get('/agencyPhone/{id}', [OfferController::class, 'agencyPhone']);
     Route::get('/recent', [OfferController::class, 'recentOffers']);
     Route::get('/random', [OfferController::class, 'randomOffers']);
+    Route::get('/offer/list/map', [OfferController::class, 'listOffersMap']);
 
     //Photos
     Route::apiResource('/photo', PhotoController::class);

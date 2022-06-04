@@ -257,4 +257,9 @@ class OfferController extends Controller
         ], 200);
     }
 
+
+    public function listOffersMap()
+    {
+        return Offer::orderBy('created_at', 'desc')->select('id', 'latitude','longitude', 'location','name')->get();;
+    }
 }
