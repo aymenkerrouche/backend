@@ -47,6 +47,8 @@ Route::group(['middleware'=>['auth:sanctum']],function () {
     // Offer
     Route::apiResource('/offer', OfferController::class);
     Route::get('/get/id', [OfferController::class, 'getOfferId']);
+    Route::get('/search/{name}', [OfferController::class, 'search']);
+    Route::get('/offer/search/{small}/{big}', [OfferController::class, 'searchPrice']);
     Route::get('/agencyPhone/{id}', [OfferController::class, 'agencyPhone']);
     Route::get('/recent', [OfferController::class, 'recentOffers']);
     Route::get('/random', [OfferController::class, 'randomOffers']);

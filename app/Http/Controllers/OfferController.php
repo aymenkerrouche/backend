@@ -153,7 +153,60 @@ class OfferController extends Controller
      */
     public function search($name)
     {
-        return Offer::where('name', 'like','%'.$name.'%')->get();
+        return response([
+        'offers' => Offer::where('name', 'like','%'.$name.'%')
+            ->orWhere('description', 'like','%'.$name.'%')
+            ->orWhere('logement_type', 'like','%'.$name.'%')
+            ->orWhere('trading_type', 'like','%'.$name.'%')
+            ->orWhere('rooms', 'like','%'.$name.'%')
+            ->orWhere('price', '>=','%'.$name.'%')
+            ->orWhere('price', '<=','%'.$name.'%')
+            ->orWhere('location', 'like','%'.$name.'%')
+            ->orderBy('created_at', 'desc')->with('user:id,name')
+            ->with('likes', function($like){
+                return $like->where('user_id', auth()->user()->id)
+                    ->select('id', 'user_id', 'offer_id')->get();
+        })->select('id','name','image', 'price','location','user_id','agency_id')
+            ->get()
+    ], 200);;
+    }
+
+    public function searchPrice($small,$big)
+    {
+        if ($small and $big != -1){
+            return response([
+                'offers' => Offer::where('price','>=',$small,)->where('price','<=',$big,)
+                    ->orderBy('price', 'asc')->with('user:id,name')
+                    ->with('likes', function($like){
+                        return $like->where('user_id', auth()->user()->id)
+                            ->select('id', 'user_id', 'offer_id')->get();
+                    })->select('id','name','image', 'price','location','user_id','agency_id')
+                    ->get()
+            ], 200);
+
+        }
+        if ($small == -1) {
+            return response([
+                'offers' => Offer::where('price', '<=', $big,)
+                    ->orderBy('price', 'asc')->with('user:id,name')
+                    ->with('likes', function ($like) {
+                        return $like->where('user_id', auth()->user()->id)
+                            ->select('id', 'user_id', 'offer_id')->get();
+                    })->select('id', 'name', 'image', 'price', 'location', 'user_id', 'agency_id')
+                    ->get()
+            ], 200);
+        }
+        if($big == -1){
+            return response([
+                'offers' => Offer::where('price','>=',$small,)
+                    ->orderBy('price', 'asc')->with('user:id,name')
+                    ->with('likes', function($like){
+                        return $like->where('user_id', auth()->user()->id)
+                            ->select('id', 'user_id', 'offer_id')->get();
+                    })->select('id','name','image', 'price','location','user_id','agency_id')
+                    ->get()
+            ], 200);
+        }
     }
 
     public function agencyPhone($id)
