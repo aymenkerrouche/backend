@@ -153,22 +153,33 @@ class OfferController extends Controller
      */
     public function search($name)
     {
-        return response([
-        'offers' => Offer::where('name', 'like','%'.$name.'%')
-            ->orWhere('description', 'like','%'.$name.'%')
-            ->orWhere('logement_type', 'like','%'.$name.'%')
-            ->orWhere('trading_type', 'like','%'.$name.'%')
-            ->orWhere('rooms', 'like','%'.$name.'%')
-            ->orWhere('price', '>=','%'.$name.'%')
-            ->orWhere('price', '<=','%'.$name.'%')
-            ->orWhere('location', 'like','%'.$name.'%')
-            ->orderBy('created_at', 'desc')->with('user:id,name')
-            ->with('likes', function($like){
-                return $like->where('user_id', auth()->user()->id)
-                    ->select('id', 'user_id', 'offer_id')->get();
-        })->select('id','name','image', 'price','location','user_id','agency_id')
-            ->get()
-    ], 200);;
+        if($name == 'Alger'){
+            return response([
+                'offers' => Offer::where('location', 'like','%'.$name.'%'.'Algeria')
+                    ->orderBy('created_at', 'desc')->with('user:id,name')
+                    ->with('likes', function($like){
+                        return $like->where('user_id', auth()->user()->id)
+                            ->select('id', 'user_id', 'offer_id')->get();
+                    })->select('id','name','image', 'price','location','user_id','agency_id')
+                    ->get()
+            ], 200);
+        }else{
+            return response([
+                'offers' => Offer::where('name', 'like','%'.$name.'%')
+                    ->orWhere('description', 'like','%'.$name.'%')
+                    ->orWhere('logement_type', 'like','%'.$name.'%')
+                    ->orWhere('trading_type', 'like','%'.$name.'%')
+                    ->orWhere('rooms', 'like','%'.$name.'%')
+                    ->orWhere('location', 'like','%'.$name.'%')
+                    ->orderBy('created_at', 'desc')->with('user:id,name')
+                    ->with('likes', function($like){
+                        return $like->where('user_id', auth()->user()->id)
+                            ->select('id', 'user_id', 'offer_id')->get();
+                    })->select('id','name','image', 'price','location','user_id','agency_id')
+                    ->get()
+            ], 200);
+        }
+
     }
 
     public function searchPrice($small,$big)

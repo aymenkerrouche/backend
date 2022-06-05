@@ -10,37 +10,24 @@ use Illuminate\Support\Facades\DB;
 class LikeController extends Controller
 {
     // like or unlike
-
     public function likeOrUnlike($id)
     {
         $offer = Offer::find($id);
 
-        if(!$offer)
-        {
-            return response([
-                'message' => 'Offer not found.'
-            ], 403);
+        if(!$offer) {
+            return response([ 'message' => 'Offer not found.'], 403);
         }
 
         $like = $offer->likes()->where('user_id', auth()->user()->id)->first();
 
         // if not liked then like
-        if(!$like)
-        {
-            Like::create([
-                'offer_id' => $id,
-                'user_id' => auth()->user()->id
-            ]);
+        if(!$like){
+            Like::create([ 'offer_id' => $id, 'user_id' => auth()->user()->id]);
+            return response(['message' => 'Liked'], 200);}
 
-            return response([
-                'message' => 'Liked'
-            ], 200);
-        }
         // else dislike it
         $like->delete();
-        return response([
-            'message' => 'Disliked'
-        ], 200);
+        return response([ 'message' => 'Disliked'], 200);
     }
 
     public function index()
