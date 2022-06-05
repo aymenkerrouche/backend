@@ -166,10 +166,8 @@ class OfferController extends Controller
         }else{
             return response([
                 'offers' => Offer::where('name', 'like','%'.$name.'%')
-                    ->orWhere('description', 'like','%'.$name.'%')
                     ->orWhere('logement_type', 'like','%'.$name.'%')
                     ->orWhere('trading_type', 'like','%'.$name.'%')
-                    ->orWhere('rooms', 'like','%'.$name.'%')
                     ->orWhere('location', 'like','%'.$name.'%')
                     ->orderBy('created_at', 'desc')->with('user:id,name')
                     ->with('likes', function($like){
@@ -273,4 +271,5 @@ class OfferController extends Controller
     {
         return Offer::orderBy('created_at', 'desc')->select('id', 'latitude','longitude', 'location','name')->get();;
     }
+
 }
