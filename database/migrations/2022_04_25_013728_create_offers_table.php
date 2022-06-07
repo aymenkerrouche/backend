@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('offers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->string('logement_type');
             $table->string('trading_type');
             $table->date('date_start')->nullable();
@@ -30,6 +30,7 @@ return new class extends Migration
             $table->double('latitude')->nullable();
             $table->double('longitude')->nullable();
             $table->string('location')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
